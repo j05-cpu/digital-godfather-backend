@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="AutoStartup">
+<meta name="description" content="Generate 38 AI startup reports automatically. Free.">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000'/><text y='.9em' font-size='90'>🚀</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000'/><text y='.9em' font-size='90'>🚀</text></svg>">
+<title>AutoStartup</title>
+<style>
+:root{
+  --bg:#000;--bg2:#0d0d0d;--bg3:#1a1a1a;--txt:#fff;--txt2:#bbb;--border:#222;--card:#111;--accent:#0ed2d2;
+}
+:root.light{
+  --bg:#f0f0f0;--bg2:#ffffff;--bg3:#e5e5e5;--txt:#000;--txt2:#444;--border:#ddd;--card:#fff;--accent:#0891b2;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow:hidden;font-size:15px;transition:background .3s,color .3s;}
+::-webkit-scrollbar{display:none;}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);transition:transform .28s cubic-bezier(.4,0,.2,1);overflow:hidden;}
+.screen.off{transform:translateX(100%);pointer-events:none;}
+
+/* HOME */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
+
+.home-hero{padding:60px 20px 28px;border-bottom:1px solid var(--border);background:var(--bg);position:relative;overflow:hidden;}
+.home-hero::before{content:'';position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(14,210,210,0.06) 0%,transparent 70%);pointer-events:none;}
+.hero-live-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(14,210,210,0.08);border:1px solid rgba(14,210,210,0.2);padding:4px 10px;border-radius:2px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+.hero-live-dot{width:5px;height:5px;background:var(--accent);border-radius:50%;animation:hpulse 2s infinite;}
+@keyframes hpulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.hero-h1{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;line-height:1.15;letter-spacing:-0.8px;margin-bottom:10px;}
+.hero-h1 .ha{color:var(--accent);}
+.hero-h1 .hd{color:#333;}
+.hero-sub-txt{font-size:12px;color:#666;line-height:1.7;margin-bottom:20px;letter-spacing:0.2px;}
+.hero-stats-row{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.hstat{flex:1;text-align:center;padding:12px 8px;border-right:1px solid var(--border);}
+.hstat:last-child{border-right:none;}
+.hstat-num{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--accent);letter-spacing:-0.5px;}
+.hstat-lbl{font-size:9px;color:#555;letter-spacing:0.5px;text-transform:uppercase;margin-top:2px;}
+
+/* AGENTS PREVIEW */
+.agents-preview{padding:0 20px 20px;border-bottom:1px solid var(--border);}
+.ap-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555;padding:16px 0 12px;display:flex;align-items:center;gap:6px;}
+.ap-title::before{content:'//';color:var(--accent);opacity:0.5;font-size:10px;}
+.agents-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;}
+.agents-scroll::-webkit-scrollbar{display:none;}
+.ap-card{flex-shrink:0;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:140px;cursor:default;}
+.ap-card-ico{font-size:20px;margin-bottom:8px;display:block;}
+.ap-card-name{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;}
+.ap-card-desc{font-size:10px;color:#555;line-height:1.5;}
+
+/* COST STRIP */
+.cost-strip{margin:0 20px 16px;background:rgba(255,59,59,0.05);border:1px solid rgba(255,59,59,0.15);border-radius:10px;padding:14px 16px;}
+.cost-strip-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#ff3b3b;margin-bottom:10px;}
+.cost-items{display:flex;gap:12px;overflow-x:auto;}
+.cost-items::-webkit-scrollbar{display:none;}
+.cost-item{flex-shrink:0;}
+.cost-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#ff3b3b;}
+.cost-lbl{font-size:9px;color:#666;margin-top:2px;white-space:nowrap;}
+
+/* INPUT SECTION */
+.input-section{padding:16px 20px 0;}
+.input-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#555;margin-bottom:8px;display:block;}
+
+/* HOME */
+#home{overflow-y:auto;}
+.home-top{padding:54px 20px 22px;border-bottom:1px solid var(--border);}
+.logo-row{display:flex;align-items:center;justify-content:space-between;}
+.logo-left{display:flex;align-items:center;gap:11px;}
+.logo-text{font-size:22px;font-weight:700;color:var(--txt);}
+.logo-text em{font-style:normal;color:var(--accent);}
+.btn-row{display:flex;gap:8px;align-items:center;}
+.hist-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;}
+.hist-btn:active{border-color:var(--txt);}
+.home-desc{font-size:14px;color:#666;line-height:1.55;margin-top:10px;}
+.home-body{padding:22px 20px 50px;display:flex;flex-direction:column;gap:16px;}
+.lbl{font-size:13px;color:#666;margin-bottom:6px;display:block;}
+.inp{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:13px 15px;font-size:15px;color:var(--txt);outline:none;font-family:inherit;transition:border-color .2s;}
+.inp:focus{border-color:#555;}
+.inp::placeholder{color:#333;}
+textarea.inp{resize:none;line-height:1.5;}
+.go-btn{width:100%;height:52px;border-radius:11px;border:none;background:var(--txt);color:var(--bg);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;}
+.go-btn:disabled{background:var(--bg3)!important;color:#333!important;cursor:not-allowed;opacity:0.6;}
+.go-btn:active{opacity:.85;}
+.or-line{text-align:center;color:#333;font-size:13px;}
+.ex-list{display:flex;flex-direction:column;gap:9px;}
+.ex-card{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:13px 15px;color:#888;font-size:14px;font-family:inherit;text-align:left;cursor:pointer;display:flex;align-items:center;gap:11px;}
+.ex-card:active{border-color:#444;color:var(--txt);}
+.ex-em{font-size:19px;flex-shrink:0;}
+
+/* TIPS */
+.tip-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;gap:11px;align-items:flex-start;}
+.tip-ico{font-size:22px;flex-shrink:0;}
+.tip-txt{font-size:13px;color:var(--txt2);line-height:1.55;}
+.tip-label{font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.5px;margin-bottom:4px;}
+
+/* HISTORY */
+#history{display:flex;flex-direction:column;}
+.hist-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;color:#444;}
+.hist-empty-ico{font-size:48px;}
+.hist-empty-t{font-size:16px;font-weight:600;color:#555;}
+.hist-empty-s{font-size:13px;color:#333;text-align:center;}
+.hist-scroll{flex:1;overflow-y:auto;padding:16px 20px 40px;}
+.hist-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:10px;cursor:pointer;position:relative;}
+.hist-item:active{border-color:#444;}
+.hist-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.hist-item-name{font-size:16px;font-weight:600;color:var(--txt);}
+.hist-item-del{width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:transparent;color:#555;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.hist-item-del:active{border-color:#f87171;color:#f87171;}
+.hist-item-desc{font-size:13px;color:#555;line-height:1.4;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.hist-item-meta{display:flex;align-items:center;gap:10px;}
+.hist-item-count{font-size:12px;color:var(--accent);}
+.hist-item-date{font-size:12px;color:#333;}
+
+/* REPORT LIST */
+#app{display:flex;flex-direction:column;}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.nav-back{font-size:24px;color:var(--txt);cursor:pointer;line-height:1;}
+.nav-title{font-size:17px;font-weight:600;color:var(--txt);}
+.nav-count{font-size:13px;color:var(--accent);}
+.pbar{height:1px;background:var(--border);flex-shrink:0;}
+.pfill{height:100%;background:var(--txt);transition:width .3s;}
+.rep-scroll{flex:1;overflow-y:auto;}
+.cat-wrap{padding:0 20px;}
+.cat-hd{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1.2px;padding:18px 0 9px;border-bottom:1px solid var(--border);}
+.rep-row{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.rep-row:active{opacity:.6;}
+.rep-ball{width:42px;height:42px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.rep-row.done .rep-ball{background:#0a1f1f;}
+.rep-inf{flex:1;min-width:0;}
+.rep-nm{font-size:15px;color:var(--txt);font-weight:400;line-height:1.3;}
+.rep-st{font-size:12px;color:#444;margin-top:3px;}
+.rep-row.done .rep-st{color:#0e7c7b;}
+.rep-arr{font-size:19px;color:#222;flex-shrink:0;}
+.rep-row.done .rep-arr{color:#0e7c7b;}
+.rep-row.bookmarked .rep-ball{border:2px solid gold;}
+
+/* SEARCH */
+.search-wrap{padding:10px 16px 0;}
+.search-inp{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;color:var(--txt);outline:none;font-family:inherit;}
+.search-inp::placeholder{color:#444;}
+
+/* RESULT */
+#result{display:flex;flex-direction:column;}
+.res-nav{display:flex;align-items:center;gap:11px;padding:15px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.res-back{font-size:24px;color:var(--txt);cursor:pointer;flex-shrink:0;line-height:1;}
+.res-inf{flex:1;min-width:0;}
+.res-nm{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--txt);}
+.res-biz{font-size:12px;color:#444;margin-top:2px;}
+.res-actions{display:flex;gap:7px;flex-shrink:0;}
+.act-btn{height:32px;padding:0 11px;border-radius:8px;border:1px solid var(--border);background:transparent;color:#666;font-size:13px;cursor:pointer;font-family:inherit;}
+.act-btn:active{border-color:var(--txt);color:var(--txt);}
+.res-body{flex:1;overflow-y:auto;padding:20px 20px 80px;}
+.res-chip{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 15px;margin-bottom:22px;display:flex;align-items:center;gap:10px;}
+.res-chip-ico{font-size:20px;}
+.res-chip-nm{font-size:14px;font-weight:500;color:var(--txt);}
+.res-chip-biz{font-size:12px;color:#444;margin-top:1px;}
+
+/* RATING */
+
+
+
+
+
+
+/* EDIT TEXTAREA */
+.edit-wrap{display:none;flex:1;flex-direction:column;padding:16px 20px;}
+.edit-ta{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:13px;font-size:14px;color:var(--txt);font-family:inherit;line-height:1.6;outline:none;resize:none;width:100%;}
+.edit-save{width:100%;height:46px;border-radius:11px;border:none;background:var(--txt);color:var(--bg);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px;}
+
+/* CONTENT */
+.ct{font-size:15px;line-height:1.8;color:var(--txt2);font-weight:400;}
+.ct h3{font-size:15px;font-weight:600;color:var(--txt);margin:22px 0 8px;padding-left:10px;border-left:2px solid #444;display:block;}
+.ct p{margin-bottom:8px;color:var(--txt2);}
+.ct ul{list-style:none;padding:0;margin:6px 0;}
+.ct li{padding-left:14px;margin-bottom:5px;color:var(--txt2);position:relative;}
+.ct li::before{content:"·";color:#555;position:absolute;left:2px;}
+.ct strong{color:var(--txt);font-weight:500;}
+.ct code{background:var(--bg2);padding:1px 6px;border-radius:4px;font-size:13px;color:#aaa;font-family:monospace;}
+
+/* LOADING */
+.ld{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:16px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sp{width:36px;height:36px;border:2px solid var(--border);border-top-color:var(--txt);border-radius:50%;animation:spin .9s linear infinite;}
+.ld-t{font-size:15px;font-weight:600;color:var(--txt);}
+.ld-s{font-size:13px;color:#444;text-align:center;line-height:1.5;}
+
+/* MODAL */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:200;display:flex;align-items:flex-end;transition:opacity .22s;}
+.ov.off{opacity:0;pointer-events:none;}
+.sheet{background:var(--bg2);border-radius:18px 18px 0 0;border-top:1px solid var(--border);padding:18px 20px 38px;width:100%;}
+.sh-handle{width:34px;height:3px;background:#333;border-radius:2px;margin:0 auto 18px;}
+.sh-title{font-size:17px;font-weight:700;margin-bottom:16px;color:var(--txt);}
+.sh-save{width:100%;height:50px;border-radius:11px;border:none;background:var(--txt);color:var(--bg);font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:9px 16px;font-size:13px;color:var(--txt);z-index:600;opacity:0;transition:all .22s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.ok{border-color:#1a3a1a;color:#4ade80;}
+.toast.err{border-color:#3a1a1a;color:#f87171;}
+
+/* FEEDBACK MODAL */
+.feedback-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:flex-end;transition:opacity .22s;}
+.feedback-ov.off{opacity:0;pointer-events:none;}
+.feedback-sheet{background:var(--bg2);border-radius:18px 18px 0 0;border-top:1px solid var(--border);padding:20px 20px 40px;width:100%;}
+.feedback-title{font-size:18px;font-weight:700;color:var(--txt);text-align:center;margin-bottom:6px;}
+.feedback-sub{font-size:13px;color:#666;text-align:center;margin-bottom:20px;}
+
+
+
+.feedback-ta{width:100%;background:var(--bg3);border:1px solid var(--accent);border-radius:11px;padding:12px;font-size:14px;color:var(--txt);font-family:inherit;outline:none;resize:none;margin-bottom:12px;min-height:90px;}
+.feedback-submit{width:100%;height:48px;border-radius:11px;border:none;background:var(--txt);color:var(--bg);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:10px;}
+.feedback-skip{width:100%;height:36px;border-radius:11px;border:1px solid var(--border);background:transparent;color:#666;font-size:13px;cursor:pointer;font-family:inherit;}
+
+/* AGENTS */
+.agents-screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);z-index:99;}
+.agents-screen.off{display:none;}
+.aresult-screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);z-index:101;}
+.aresult-screen.off{display:none;}
+.mkit-screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);z-index:100;}
+.mkit-screen.off{display:none;}
+.agents-nav{display:flex;align-items:center;gap:11px;padding:15px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.agents-back{font-size:24px;color:var(--txt);cursor:pointer;}
+.agents-title{font-size:17px;font-weight:700;color:var(--txt);flex:1;}
+.agents-body{flex:1;overflow-y:auto;padding:16px 20px 40px;}
+.agent-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;cursor:pointer;display:flex;align-items:center;gap:14px;}
+.agent-card:active{border-color:var(--accent);}
+.agent-ico{font-size:32px;flex-shrink:0;}
+.agent-info{flex:1;}
+.agent-name{font-size:15px;font-weight:700;color:var(--txt);}
+.agent-desc{font-size:12px;color:#666;margin-top:3px;}
+.agent-arr{font-size:18px;color:#333;}
+
+/* AGENT RESULT */
+.aresult-nav{display:flex;align-items:center;gap:11px;padding:15px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.aresult-back{font-size:24px;color:var(--txt);cursor:pointer;}
+.aresult-title{font-size:16px;font-weight:700;color:var(--txt);flex:1;}
+.aresult-body{flex:1;overflow-y:auto;padding:16px 20px 80px;}
+.aresult-section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;}
+.aresult-sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.aresult-sec-title{font-size:13px;font-weight:700;color:var(--txt);}
+.aresult-sec-copy{height:28px;padding:0 10px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:11px;cursor:pointer;font-family:inherit;}
+.aresult-content{font-size:13px;color:var(--txt2);line-height:1.7;white-space:pre-wrap;}
+.aresult-copy-all{position:fixed;bottom:20px;left:20px;right:20px;height:50px;border-radius:13px;border:none;background:var(--txt);color:var(--bg);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
+
+/* MARKETING KIT */
+.mkit-nav{display:flex;align-items:center;gap:11px;padding:15px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.mkit-back{font-size:24px;color:var(--txt);cursor:pointer;}
+.mkit-title{font-size:17px;font-weight:700;color:var(--txt);flex:1;}
+.mkit-body{flex:1;overflow-y:auto;padding:16px 20px 80px;}
+.mkit-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px;}
+.mkit-card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.mkit-card-title{font-size:14px;font-weight:700;color:var(--txt);}
+.mkit-card-copy{height:30px;padding:0 12px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:12px;cursor:pointer;font-family:inherit;}
+.mkit-card-copy:active{border-color:var(--txt);}
+.mkit-content{font-size:13px;color:var(--txt2);line-height:1.7;white-space:pre-wrap;}
+.mkit-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:14px;}
+.mkit-gen-btn{position:fixed;bottom:20px;left:20px;right:20px;height:52px;border-radius:14px;border:none;background:var(--txt);color:var(--bg);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;z-index:999;pointer-events:none;animation:confetti-fall 3s ease-in forwards;}
+@keyframes confetti-fall{0%{opacity:1;transform:translateY(-20px) rotate(0deg);}100%{opacity:0;transform:translateY(100vh) rotate(720deg);}}
+
+/* PROGRESS DASHBOARD */
+.prog-dash{padding:12px 16px;display:flex;gap:12px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
+.prog-stat{flex:1;text-align:center;}
+.prog-num{font-size:20px;font-weight:700;color:var(--txt);}
+.prog-lbl{font-size:10px;color:#555;margin-top:2px;letter-spacing:.5px;}
+
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.fi{animation:fi .2s ease both;}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div class="screen" id="home">
+  <div style="overflow-y:auto;flex:1;padding-bottom:100px;">
+
+    <!-- NAV -->
+    <div style="padding:20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:10;">
+      <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--txt);">Auto<em style="font-style:normal;color:var(--accent);">Startup</em></div>
+      <div class="btn-row">
+        <div class="hist-btn" id="pwa-install-btn" onclick="installPWA()" title="Install App" style="display:none">📲</div>
+        <div class="hist-btn" onclick="toggleTheme()" title="Theme">🌓</div>
+        <div class="hist-btn" onclick="showScreen('history')" title="History">🕐</div>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <div style="padding:40px 20px 32px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-80px;right:-80px;width:250px;height:250px;background:radial-gradient(circle,rgba(14,210,210,0.07) 0%,transparent 70%);pointer-events:none;"></div>
+      <div class="hero-live-tag"><span class="hero-live-dot"></span>Live — Free Access</div>
+      <div class="hero-h1">The World's Most<br>Powerful <span class="ha">Autonomous</span><br><span class="hd">AI Workforce.</span></div>
+      <div class="hero-sub-txt">Replace your entire startup team with 7 AI agents. 38 reports generated in minutes. Market research, investor pitch, revenue model — all automated. Zero human bottlenecks.</div>
+      <div class="hero-stats-row">
+        <div class="hstat"><div class="hstat-num">38</div><div class="hstat-lbl">Reports</div></div>
+        <div class="hstat"><div class="hstat-num">7</div><div class="hstat-lbl">Agents</div></div>
+        <div class="hstat"><div class="hstat-num">1000+</div><div class="hstat-lbl">Hrs Saved</div></div>
+        <div class="hstat"><div class="hstat-num">₹0</div><div class="hstat-lbl">Cost</div></div>
+      </div>
+    </div>
+
+    <!-- COST STRIP -->
+    <div style="margin:0 20px 20px;background:rgba(255,59,59,0.05);border:1px solid rgba(255,59,59,0.15);border-radius:12px;padding:16px;">
+      <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#ff3b3b;margin-bottom:12px;">// Manual Work is Costing You</div>
+      <div style="display:flex;gap:20px;overflow-x:auto;">
+        <div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#ff3b3b;">₹8.4L</div><div style="font-size:9px;color:#666;margin-top:2px;white-space:nowrap;">Market Research/yr</div></div>
+        <div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#ff3b3b;">340hrs</div><div style="font-size:9px;color:#666;margin-top:2px;white-space:nowrap;">Pitch Prep</div></div>
+        <div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#ff3b3b;">₹12L</div><div style="font-size:9px;color:#666;margin-top:2px;white-space:nowrap;">Strategy Team</div></div>
+        <div><div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#ff3b3b;">6mo</div><div style="font-size:9px;color:#666;margin-top:2px;white-space:nowrap;">Time-to-Market</div></div>
+      </div>
+    </div>
+
+    <!-- AGENTS PREVIEW -->
+    <div style="padding:0 20px 20px;">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><span style="color:var(--accent);opacity:0.5;">//</span> Your AI Workforce</div>
+      <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;">
+        <div style="flex-shrink:0;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:130px;">
+          <div style="font-size:22px;margin-bottom:8px;">💡</div>
+          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;">Vision</div>
+          <div style="font-size:10px;color:#555;line-height:1.5;">Pitch deck, elevator pitch</div>
+        </div>
+        <div style="flex-shrink:0;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:130px;">
+          <div style="font-size:22px;margin-bottom:8px;">📊</div>
+          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;">Market</div>
+          <div style="font-size:10px;color:#555;line-height:1.5;">Competitor intel, TAM/SAM</div>
+        </div>
+        <div style="flex-shrink:0;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:130px;">
+          <div style="font-size:22px;margin-bottom:8px;">🚀</div>
+          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;">Build</div>
+          <div style="font-size:10px;color:#555;line-height:1.5;">Tech stack, sprint plan</div>
+        </div>
+        <div style="flex-shrink:0;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:130px;">
+          <div style="font-size:22px;margin-bottom:8px;">💰</div>
+          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;">Revenue</div>
+          <div style="font-size:10px;color:#555;line-height:1.5;">Financial model, pricing</div>
+        </div>
+        <div style="flex-shrink:0;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:130px;">
+          <div style="font-size:22px;margin-bottom:8px;">💵</div>
+          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;">Investor</div>
+          <div style="font-size:10px;color:#555;line-height:1.5;">Cold emails, pitch script</div>
+        </div>
+        <div style="flex-shrink:0;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;width:130px;">
+          <div style="font-size:22px;margin-bottom:8px;">🎯</div>
+          <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--txt);margin-bottom:4px;">Brand</div>
+          <div style="font-size:10px;color:#555;line-height:1.5;">Voice, 30-day calendar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div style="margin:0 20px 20px;border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="padding:16px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#555;display:flex;align-items:center;gap:6px;"><span style="color:var(--accent);opacity:0.5;">//</span> How It Works</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
+        <div style="padding:16px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);">
+          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--border);margin-bottom:8px;">01</div>
+          <div style="font-size:13px;font-weight:600;color:var(--txt);margin-bottom:4px;">Input Idea</div>
+          <div style="font-size:11px;color:#555;line-height:1.6;">Enter your startup name and concept</div>
+        </div>
+        <div style="padding:16px;border-bottom:1px solid var(--border);">
+          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--border);margin-bottom:8px;">02</div>
+          <div style="font-size:13px;font-weight:600;color:var(--txt);margin-bottom:4px;">AI Deploys</div>
+          <div style="font-size:11px;color:#555;line-height:1.6;">38 reports generated automatically</div>
+        </div>
+        <div style="padding:16px;border-right:1px solid var(--border);">
+          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--border);margin-bottom:8px;">03</div>
+          <div style="font-size:13px;font-weight:600;color:var(--txt);margin-bottom:4px;">Activate Agents</div>
+          <div style="font-size:11px;color:#555;line-height:1.6;">7 agents execute across functions</div>
+        </div>
+        <div style="padding:16px;">
+          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--border);margin-bottom:8px;">04</div>
+          <div style="font-size:13px;font-weight:600;color:var(--txt);margin-bottom:4px;">Execute</div>
+          <div style="font-size:11px;color:#555;line-height:1.6;">Download, share, deploy instantly</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIP -->
+    <div class="tip-card" id="tip-card" style="margin:0 20px 20px;">
+      <div class="tip-ico">💡</div>
+      <div class="tip-txt"><div class="tip-label">STARTUP TIP</div><div id="tip-text"></div></div>
+    </div>
+
+  </div>
+
+  <!-- STICKY GET STARTED BUTTON -->
+  <div style="position:absolute;bottom:0;left:0;right:0;padding:16px 20px;background:linear-gradient(transparent,var(--bg) 30%);padding-top:40px;">
+    <button onclick="showInputModal()" style="width:100%;height:56px;border-radius:12px;border:none;background:var(--accent);color:#000;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.5px;">🚀 Deploy Your AI Team — Free</button>
+  </div>
+</div>
+
+<!-- INPUT MODAL -->
+<div class="ov off" id="input-modal" onclick="if(event.target.id==='input-modal')closeInputModal()">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">// Deploy AI Team</div>
+    <div class="sh-title">Enter Your Startup</div>
+    <label class="lbl">Startup Name</label>
+    <input class="inp" type="text" id="biz-name" placeholder="E.g., FitBuddy, TaskFlow" style="margin-bottom:12px;"/>
+    <label class="lbl">Startup Idea</label>
+    <textarea class="inp" id="biz-desc" rows="4" placeholder="What does it do? Who is it for? What problem does it solve?" style="margin-bottom:8px;"></textarea>
+    <button class="sh-save" id="go-btn" onclick="startApp()" disabled style="background:var(--bg3);color:#333;">Enter details to continue</button>
+    <div style="margin-top:12px;">
+      <div style="font-size:11px;color:#444;margin-bottom:8px;">Quick examples:</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <button style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:#888;font-size:12px;font-family:inherit;text-align:left;cursor:pointer;" onclick="setEx('FitBuddy','AI-powered personalized fitness coach app for Indians doing home workouts. Creates custom workout plans, tracks progress, and motivates users through gamification. Targets working professionals aged 25-40.')">🏋️ AI Fitness Coach App</button>
+        <button style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:#888;font-size:12px;font-family:inherit;text-align:left;cursor:pointer;" onclick="setEx('FreelanceHub','AI platform for Indian freelancers to find clients, manage projects, generate invoices, and get paid. Targeting 15 million freelancers across design, development, and writing.')">💼 Freelancer Platform</button>
+        <button style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:#888;font-size:12px;font-family:inherit;text-align:left;cursor:pointer;" onclick="setEx('RestroOps','B2B inventory and order management SaaS for small restaurants and cloud kitchens in India.')">🍽️ Restaurant B2B SaaS</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div class="screen off" id="history">
+  <div class="nav-bar">
+    <div class="nav-back" onclick="showScreen('home')">←</div>
+    <div class="nav-title">My Projects</div>
+    <div style="width:24px"></div>
+  </div>
+  <div id="hist-body" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;"></div>
+</div>
+
+<!-- REPORT LIST -->
+<div class="screen off" id="app">
+  <div class="nav-bar">
+    <div class="nav-back" onclick="goHome()">←</div>
+    <div class="nav-title" id="app-title">Select Report</div>
+    <div class="nav-count" id="prog-cnt">0 / 38</div>
+  </div>
+  <div class="pbar"><div class="pfill" id="pfill"></div></div>
+  <!-- PROGRESS DASHBOARD -->
+  <div class="prog-dash">
+    <div class="prog-stat"><div class="prog-num" id="dash-done">0</div><div class="prog-lbl">DONE</div></div>
+    <div class="prog-stat"><div class="prog-num" id="dash-left">38</div><div class="prog-lbl">LEFT</div></div>
+    <div class="prog-stat"><div class="prog-num" id="dash-star">0</div><div class="prog-lbl">SAVED</div></div>
+    <div class="prog-stat"><div class="prog-num" id="dash-pct">0%</div><div class="prog-lbl">COMPLETE</div></div>
+  </div>
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <input class="search-inp" type="text" id="search-inp" placeholder="🔍 Search sections..." oninput="buildList()"/>
+  </div>
+  <div style="padding:10px 16px 0;display:flex;gap:8px;">
+    <button onclick="generateAll()" id="gen-all-btn" style="flex:1;padding:11px 6px;background:var(--txt);color:var(--bg);border:none;border-radius:12px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;">⚡ Generate All</button>
+    <button onclick="copyAllReports()" style="flex:1;padding:11px 6px;background:var(--bg2);color:var(--txt);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;">📋 Copy All</button>
+    <button onclick="openMkit()" style="flex:1;padding:11px 6px;background:#0ed2d2;color:#000;border:none;border-radius:12px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;">📝 Market</button>
+    <button onclick="openAgents()" style="flex:1;padding:11px 6px;background:var(--bg2);color:var(--txt);border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;">🤖 Agents</button>
+  </div>
+  <div id="gen-all-status" style="display:none;text-align:center;font-size:12px;color:#666;padding:4px 16px 0;"></div>
+  <div class="rep-scroll" id="rep-scroll"></div>
+</div>
+
+<!-- RESULT -->
+<div class="screen off" id="result">
+  <div class="res-nav">
+    <div class="res-back" onclick="goBack()">←</div>
+    <div class="res-inf">
+      <div class="res-nm" id="r-title">Report</div>
+      <div class="res-biz" id="r-biz">Business</div>
+    </div>
+    <div class="res-actions">
+      <button class="act-btn" id="bm-btn" onclick="toggleBookmark()" title="Bookmark">☆</button>
+      <button class="act-btn" onclick="toggleEdit()" title="Edit">✏️</button>
+      <button class="act-btn" id="redo-btn" onclick="redoCurrent()" style="display:none">↻</button>
+    </div>
+  </div>
+  <div class="res-body" id="res-body"></div>
+  <!-- EDIT MODE -->
+  <div class="edit-wrap" id="edit-wrap">
+    <textarea class="edit-ta" id="edit-ta" placeholder="Edit report here..."></textarea>
+    <button class="edit-save" onclick="saveEdit()">Save Changes</button>
+  </div>
+  <!-- SHARE BAR -->
+  <div style="display:flex;gap:7px;padding:14px 20px;border-top:1px solid var(--border);flex-shrink:0;background:var(--bg);">
+    <button class="act-btn" onclick="copyReport()" style="flex:1;height:42px;font-size:13px;">📋 Copy</button>
+    <button class="act-btn" onclick="shareWhatsApp()" style="flex:1;height:42px;font-size:13px;">📱 WhatsApp</button>
+    <button class="act-btn" onclick="downloadPDF()" style="flex:1;height:42px;font-size:13px;">📄 PDF</button>
+    <button class="act-btn" onclick="emailReport()" style="flex:1;height:42px;font-size:13px;">📧 Email</button>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="ov off" id="modal" onclick="modalBg(event)">
+  <div class="sheet">
+    <div class="sh-handle"></div>
+    <div class="sh-title">Edit Project</div>
+    <label class="lbl">Business Name</label>
+    <input class="inp" type="text" id="m-name" style="margin-bottom:14px"/>
+    <label class="lbl">Business Idea</label>
+    <textarea class="inp" id="m-desc" rows="4" style="margin-bottom:8px"></textarea>
+    <div style="font-size:12px;color:#555;margin-bottom:10px;">Changing idea will clear all generated reports.</div>
+    <button class="sh-save" onclick="saveModal()">Save Changes</button>
+  </div>
+</div>
+
+<!-- MARKETING KIT SCREEN -->
+<div class="mkit-screen off" id="mkit">
+  <div class="mkit-nav">
+    <div class="mkit-back" onclick="closeMkit()">←</div>
+    <div class="mkit-title">📝 Marketing Kit</div>
+  </div>
+  <div class="mkit-body" id="mkit-body">
+    <div class="mkit-loading" id="mkit-loading">
+      <div class="sp"></div>
+      <div class="ld-t">Creating your marketing kit...</div>
+      <div class="ld-s">AI is reading your reports<br>and creating content for all platforms</div>
+    </div>
+  </div>
+</div>
+
+<!-- AGENTS LIST SCREEN -->
+<div class="agents-screen off" id="agents-screen">
+  <div class="agents-nav">
+    <div class="agents-back" onclick="closeAgents()">←</div>
+    <div class="agents-title">🤖 AI Agents</div>
+  </div>
+  <div class="agents-body">
+    <div style="font-size:13px;color:#666;margin-bottom:14px;">Select an agent to automatically execute actions based on your reports</div>
+    <div class="agent-card" onclick="runAgent('vision')">
+      <div class="agent-ico">💡</div>
+      <div class="agent-info">
+        <div class="agent-name">Vision Agent</div>
+        <div class="agent-desc">Creates pitch deck outline, elevator pitch & investor one-pager</div>
+      </div>
+      <div class="agent-arr">›</div>
+    </div>
+    <div class="agent-card" onclick="runAgent('market')">
+      <div class="agent-ico">📊</div>
+      <div class="agent-info">
+        <div class="agent-name">Market Agent</div>
+        <div class="agent-desc">Competitor analysis, market sizing & opportunity report</div>
+      </div>
+      <div class="agent-arr">›</div>
+    </div>
+    <div class="agent-card" onclick="runAgent('build')">
+      <div class="agent-ico">🚀</div>
+      <div class="agent-info">
+        <div class="agent-name">Build Agent</div>
+        <div class="agent-desc">Dev checklist, tech stack decisions & MVP sprint plan</div>
+      </div>
+      <div class="agent-arr">›</div>
+    </div>
+    <div class="agent-card" onclick="runAgent('revenue')">
+      <div class="agent-ico">💰</div>
+      <div class="agent-info">
+        <div class="agent-name">Revenue Agent</div>
+        <div class="agent-desc">Pricing strategy, financial model & revenue projections</div>
+      </div>
+      <div class="agent-arr">›</div>
+    </div>
+    <div class="agent-card" onclick="runAgent('hr')">
+      <div class="agent-ico">👥</div>
+      <div class="agent-info">
+        <div class="agent-name">HR Agent</div>
+        <div class="agent-desc">Job descriptions, team structure & hiring roadmap</div>
+      </div>
+      <div class="agent-arr">›</div>
+    </div>
+    <div class="agent-card" onclick="runAgent('investor')">
+      <div class="agent-ico">💵</div>
+      <div class="agent-info">
+        <div class="agent-name">Investor Agent</div>
+        <div class="agent-desc">Cold outreach emails, pitch script & funding strategy</div>
+      </div>
+      <div class="agent-arr">›</div>
+    </div>
+    <div class="agent-card" onclick="runAgent('brand')">
+      <div class="agent-ico">🎯</div>
+      <div class="agent-info">
+        <div class="agent-name">Brand Agent</div>
+        <div class="agent-desc">Brand voice, messaging framework & positioning statement</div>
+      </div>
+      <div class="agent-arr">›</div>
+    </div>
+  </div>
+</div>
+
+<!-- AGENT RESULT SCREEN -->
+<div class="aresult-screen off" id="aresult-screen">
+  <div class="aresult-nav">
+    <div class="aresult-back" onclick="closeAgentResult()">←</div>
+    <div class="aresult-title" id="aresult-title">Agent Result</div>
+  </div>
+  <div class="aresult-body" id="aresult-body"></div>
+  <button class="aresult-copy-all" onclick="copyAgentResult()">📋 Copy All</button>
+</div>
+
+<!-- FEEDBACK MODAL -->
+<div class="feedback-ov off" id="feedback-modal" onclick="if(event.target===this)closeFeedback()">
+  <div class="feedback-sheet">
+    <div class="feedback-title">Share Your Feedback 💬</div>
+    <div class="feedback-sub">What did you like? What should we improve?</div>
+
+    <textarea class="feedback-ta" id="feedback-ta" rows="3" placeholder="Which report was most useful? What should we add next? (Optional)"></textarea>
+    <button class="feedback-submit" onclick="submitFeedback()">Submit ✓</button>
+    <button class="feedback-skip" onclick="closeFeedback()">Skip</button>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── RAILWAY BACKEND ──
+const RAILWAY_URL = ''; // Paste your Railway URL here after deploying
+
+async function runRailwayAgent(agentType) {
+  if(!RAILWAY_URL){
+    showToast('Railway backend not connected yet!','err');
+    return null;
+  }
+  const resp = await fetch(RAILWAY_URL + '/run-agent', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      startup_name: BIZ.name,
+      startup_idea: BIZ.desc,
+      agent_type: agentType
+    })
+  });
+  if(!resp.ok) throw new Error('Railway error ' + resp.status);
+  const data = await resp.json();
+  return data.result;
+}
+
+const BOT_TOKEN='8710665779:AAFkvF2KCfIo0orsM-bOQApTGbWp3RZ5UMU';
+const CHAT_ID='8515648321';
+
+const SECTIONS=[
+  {id:'overview',label:'Business Overview',icon:'📋',cat:'IDEA & VISION'},
+  {id:'problem',label:'Problem & Solution',icon:'💡',cat:'IDEA & VISION'},
+  {id:'whynow',label:'Why Now?',icon:'⏰',cat:'IDEA & VISION'},
+  {id:'vision',label:'Vision & Mission',icon:'🎯',cat:'IDEA & VISION'},
+  {id:'market',label:'Market Potential',icon:'📊',cat:'MARKET RESEARCH'},
+  {id:'segments',label:'Customer Segmentation',icon:'👥',cat:'MARKET RESEARCH'},
+  {id:'painpoints',label:'User Pain Points',icon:'⚠️',cat:'MARKET RESEARCH'},
+  {id:'trends',label:'Market & Consumer Trends',icon:'📈',cat:'MARKET RESEARCH'},
+  {id:'competition',label:'Competition & Alternatives',icon:'⚔️',cat:'MARKET RESEARCH'},
+  {id:'stories',label:'User Stories',icon:'📖',cat:'PRODUCT & MVP'},
+  {id:'mvp',label:'Minimum Viable Product',icon:'🚀',cat:'PRODUCT & MVP'},
+  {id:'roadmap',label:'Product Roadmap',icon:'🗺️',cat:'PRODUCT & MVP'},
+  {id:'moscow',label:'Feature Prioritization (MoSCoW)',icon:'✅',cat:'PRODUCT & MVP'},
+  {id:'ai',label:'AI & Automation Opportunities',icon:'🤖',cat:'PRODUCT & MVP'},
+  {id:'techstack',label:'Tech Stack & Tools',icon:'⚙️',cat:'PRODUCT & MVP'},
+  {id:'design',label:'Design & Mockup Guide',icon:'🎨',cat:'PRODUCT & MVP'},
+  {id:'bizmodel',label:'Business Model & Monetization',icon:'💰',cat:'BUSINESS MODEL'},
+  {id:'revenue',label:'Revenue Forecast',icon:'📉',cat:'BUSINESS MODEL'},
+  {id:'gtm',label:'Go-to-Market Strategy',icon:'📣',cat:'BUSINESS MODEL'},
+  {id:'distribution',label:'Distribution Channels',icon:'🚚',cat:'BUSINESS MODEL'},
+  {id:'acquisition',label:'User Acquisition & Retention',icon:'🔄',cat:'BUSINESS MODEL'},
+  {id:'journey',label:'Customer Journey Map',icon:'🗺️',cat:'BUSINESS MODEL'},
+  {id:'marketing',label:'Marketing & Promotion',icon:'📢',cat:'BUSINESS MODEL'},
+  {id:'seo',label:'SEO & Ad Campaigns',icon:'🔍',cat:'BUSINESS MODEL'},
+  {id:'team',label:'Team Structure & Hiring',icon:'👤',cat:'TEAM & OPERATIONS'},
+  {id:'costs',label:'Operational Costs',icon:'💸',cat:'TEAM & OPERATIONS'},
+  {id:'kpis',label:'Key Performance Indicators',icon:'📊',cat:'TEAM & OPERATIONS'},
+  {id:'support',label:'Support & Customer Success',icon:'🎧',cat:'TEAM & OPERATIONS'},
+  {id:'legal',label:'Legal & Compliance',icon:'⚖️',cat:'TEAM & OPERATIONS'},
+  {id:'traction',label:'Traction & Metrics',icon:'📈',cat:'FUNDING & GROWTH'},
+  {id:'valuation',label:'Business Valuation',icon:'💎',cat:'FUNDING & GROWTH'},
+  {id:'funding',label:'Seed / Pre-seed Funding',icon:'💵',cat:'FUNDING & GROWTH'},
+  {id:'investors',label:'Finding Investors',icon:'🔎',cat:'FUNDING & GROWTH'},
+  {id:'pitch',label:'Investor Pitch Outline',icon:'🎤',cat:'FUNDING & GROWTH'},
+  {id:'exit',label:'Exit Strategy',icon:'🚪',cat:'FUNDING & GROWTH'},
+  {id:'naming',label:'Name & Tagline Ideas',icon:'✏️',cat:'BRAND & PARTNERSHIPS'},
+  {id:'partnerships',label:'Partnerships & Collaborations',icon:'🤝',cat:'BRAND & PARTNERSHIPS'},
+  {id:'brand',label:'Brand Positioning',icon:'🎯',cat:'BRAND & PARTNERSHIPS'},
+];
+const CATS=[...new Set(SECTIONS.map(s=>s.cat))];
+const TIPS=[
+  'Start with the problem, not the solution. Customers pay to solve pain, not for features.',
+  'Talk to 10 potential customers before writing a single line of code.',
+  'Your MVP should do one thing extremely well, not many things average.',
+  'Charge from day one — free users never become paying users.',
+  'India has 800M internet users. Even 0.01% is 80,000 customers.',
+  'The best time to build a startup is now. The second best time is also now.',
+  'Distribution beats product. A great product with no reach = zero users.',
+  'Profitability is not a bad word — it means you built something people value.',
+  'Solve a problem you personally have. Founder-market fit is real.',
+  'Revenue is the best form of validation. Everything else is theory.',
+  'Focus on retention first, acquisition second. Leaky bucket kills startups.',
+  'Your competition doing it badly is your biggest market signal.',
+  'Build in public. Share your journey. People root for transparent founders.',
+  'The Indian market rewards localization — translate, price in INR, support in Hindi.',
+  'Investors fund momentum, not potential. Show traction before pitching.',
+];
+
+let BIZ={name:'',desc:''},CONTENT={},BOOKMARKS={},activeSection=null,isLoading=false,currentProjectId=null,isEditMode=false;
+
+// ── THEME ──
+function toggleTheme(){
+  document.documentElement.classList.toggle('light');
+  localStorage.setItem('theme',document.documentElement.classList.contains('light')?'light':'dark');
+}
+
+// ── TIPS ──
+function showRandomTip(){
+  const tip=TIPS[Math.floor(Math.random()*TIPS.length)];
+  document.getElementById('tip-text').textContent=tip;
+}
+
+// ── HISTORY ──
+function getProjects(){try{return JSON.parse(localStorage.getItem('sai_projects')||'[]');}catch{return[];}}
+function saveProjects(arr){try{localStorage.setItem('sai_projects',JSON.stringify(arr));}catch{}}
+function saveCurrentProject(){
+  if(!BIZ.name)return;
+  const projects=getProjects();
+  const now=Date.now();
+  if(currentProjectId){
+    const idx=projects.findIndex(p=>p.id===currentProjectId);
+    if(idx>-1){projects[idx]={...projects[idx],name:BIZ.name,desc:BIZ.desc,content:CONTENT,bookmarks:BOOKMARKS,ratings:RATINGS,updated:now};saveProjects(projects);return;}
+  }
+  currentProjectId=now.toString();
+  projects.unshift({id:currentProjectId,name:BIZ.name,desc:BIZ.desc,content:CONTENT,bookmarks:BOOKMARKS,ratings:RATINGS,created:now,updated:now});
+  saveProjects(projects);
+}
+function deleteProject(id,e){
+  e.stopPropagation();
+  saveProjects(getProjects().filter(p=>p.id!==id));
+  if(currentProjectId===id)currentProjectId=null;
+  buildHistoryList();showToast('Deleted','ok');
+}
+function loadProject(p){
+  BIZ={name:p.name,desc:p.desc};
+  CONTENT=p.content||{};
+  BOOKMARKS=p.bookmarks||{};
+  RATINGS=p.ratings||{};
+  currentProjectId=p.id;
+  document.getElementById('app-title').textContent=p.name;
+  buildList();showScreen('app');
+}
+function buildHistoryList(){
+  const body=document.getElementById('hist-body');
+  const projects=getProjects();
+  if(!projects.length){
+    body.innerHTML='<div class="hist-empty"><div class="hist-empty-ico">📂</div><div class="hist-empty-t">No projects yet</div><div class="hist-empty-s">Your reports will appear here</div></div>';
+    return;
+  }
+  body.innerHTML='<div style="padding:16px 20px 0;font-size:12px;color:#444;">'+projects.length+' project'+(projects.length>1?'s':'')+'</div>';
+  projects.forEach(p=>{
+    const done=Object.keys(p.content||{}).length;
+    const date=new Date(p.updated||p.created).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+    const card=document.createElement('div');
+    card.className='hist-item fi';
+    card.onclick=()=>loadProject(p);
+    card.innerHTML=`<div class="hist-item-top"><div class="hist-item-name">${p.name}</div><button class="hist-item-del" onclick="deleteProject('${p.id}',event)">✕</button></div><div class="hist-item-desc">${p.desc}</div><div class="hist-item-meta"><span class="hist-item-count">${done} / 38 reports</span><span class="hist-item-date">${date}</span></div>`;
+    body.appendChild(card);
+  });
+}
+
+// ── INIT ──
+window.onload=()=>{
+  if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');
+  const nameEl=document.getElementById('biz-name');
+  const descEl=document.getElementById('biz-desc');
+  if(nameEl)nameEl.addEventListener('input',checkForm);
+  if(descEl)descEl.addEventListener('input',checkForm);
+  showRandomTip();
+};
+
+function showInputModal(){
+  document.getElementById('input-modal').classList.remove('off');
+}
+function closeInputModal(){
+  document.getElementById('input-modal').classList.add('off');
+}
+function checkForm(){
+  const n=document.getElementById('biz-name').value.trim();
+  const d=document.getElementById('biz-desc').value.trim();
+  const btn=document.getElementById('go-btn');
+  if(!btn)return;
+  btn.disabled=!(n&&d);
+  if(n&&d){
+    btn.textContent='Deploy AI Team →';
+    btn.style.background='var(--accent)';
+    btn.style.color='#000';
+    btn.style.opacity='1';
+  } else {
+    btn.textContent='Enter details to continue';
+    btn.style.background='var(--bg3)';
+    btn.style.color='#333';
+    btn.style.opacity='0.6';
+  }
+}
+function setEx(name,desc){
+  document.getElementById('biz-name').value=name;
+  document.getElementById('biz-desc').value=desc;
+  checkForm();
+}
+function startApp(){
+  const n=document.getElementById('biz-name').value.trim();
+  const d=document.getElementById('biz-desc').value.trim();
+  if(!n||!d)return;
+  BIZ={name:n,desc:d};CONTENT={};BOOKMARKS={};RATINGS={};currentProjectId=null;
+  document.getElementById('app-title').textContent=n;
+  // Close modal if open
+  const modal=document.getElementById('input-modal');
+  if(modal)modal.classList.add('off');
+  buildList();showScreen('app');
+}
+function goHome(){saveCurrentProject();showScreen('home');showRandomTip();}
+
+// ── REPORT LIST ──
+function buildList(){
+  const s=document.getElementById('rep-scroll');s.innerHTML='';
+  const q=(document.getElementById('search-inp')||{value:''}).value.toLowerCase();
+  CATS.forEach(cat=>{
+    const secs=SECTIONS.filter(x=>x.cat===cat&&(!q||x.label.toLowerCase().includes(q)));
+    if(!secs.length)return;
+    const w=document.createElement('div');w.className='cat-wrap';
+    const h=document.createElement('div');h.className='cat-hd';
+    h.textContent=`${cat} (${secs.length})`;w.appendChild(h);
+    secs.forEach(sec=>{
+      const r=document.createElement('div');
+      const bm=BOOKMARKS[sec.id];
+      r.className='rep-row'+(CONTENT[sec.id]?' done':'')+(bm?' bookmarked':'');
+      r.onclick=()=>openSec(sec);
+      r.innerHTML=`<div class="rep-ball">${sec.icon}</div><div class="rep-inf"><div class="rep-nm">${sec.label}${bm?' ⭐':''}</div><div class="rep-st">${CONTENT[sec.id]?'Generated — tap to view':'Tap to generate'}</div></div><div class="rep-arr">${CONTENT[sec.id]?'✓':'›'}</div>`;
+      w.appendChild(r);
+    });
+    s.appendChild(w);
+  });
+  updProg();
+}
+function updProg(){
+  const d=Object.keys(CONTENT).length;
+  const bm=Object.keys(BOOKMARKS).length;
+  document.getElementById('pfill').style.width=(d/38*100)+'%';
+  document.getElementById('prog-cnt').textContent=d+' / 38';
+  document.getElementById('dash-done').textContent=d;
+  document.getElementById('dash-left').textContent=38-d;
+  document.getElementById('dash-star').textContent=bm;
+  document.getElementById('dash-pct').textContent=Math.round(d/38*100)+'%';
+}
+function openSec(sec){
+  activeSection=sec;
+  isEditMode=false;
+  document.getElementById('r-title').textContent=sec.label;
+  document.getElementById('r-biz').textContent=BIZ.name;
+  document.getElementById('edit-wrap').style.display='none';
+  document.getElementById('res-body').style.display='';
+  updateBookmarkBtn();
+
+  showScreen('result');
+  if(CONTENT[sec.id])renderRes();else doGen(sec);
+}
+
+// ── BOOKMARK ──
+function toggleBookmark(){
+  if(!activeSection)return;
+  if(BOOKMARKS[activeSection.id])delete BOOKMARKS[activeSection.id];
+  else BOOKMARKS[activeSection.id]=true;
+  updateBookmarkBtn();
+  buildList();
+  saveCurrentProject();
+  showToast(BOOKMARKS[activeSection.id]?'Bookmarked! ⭐':'Removed bookmark','ok');
+}
+function updateBookmarkBtn(){
+  const btn=document.getElementById('bm-btn');
+  if(!btn||!activeSection)return;
+  btn.textContent=BOOKMARKS[activeSection.id]?'★':'☆';
+  btn.style.color=BOOKMARKS[activeSection.id]?'gold':'';
+}
+
+// ── RATING ──
+
+
+// ── EDIT ──
+function toggleEdit(){
+  if(!activeSection||!CONTENT[activeSection.id])return;
+  isEditMode=!isEditMode;
+  if(isEditMode){
+    document.getElementById('edit-ta').value=CONTENT[activeSection.id];
+    document.getElementById('edit-wrap').style.display='flex';
+    document.getElementById('res-body').style.display='none';
+  }else{
+    document.getElementById('edit-wrap').style.display='none';
+    document.getElementById('res-body').style.display='';
+  }
+}
+function saveEdit(){
+  const txt=document.getElementById('edit-ta').value.trim();
+  if(!txt||!activeSection)return;
+  CONTENT[activeSection.id]=txt;
+  isEditMode=false;
+  document.getElementById('edit-wrap').style.display='none';
+  document.getElementById('res-body').style.display='';
+  renderRes();saveCurrentProject();
+  showToast('Report updated!','ok');
+}
+
+// ── COPY ──
+function copyReport(){
+  if(!activeSection||!CONTENT[activeSection.id])return;
+  const text=CONTENT[activeSection.id];
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>showToast('Copied! 📋','ok')).catch(()=>fallbackCopy(text));
+  }else fallbackCopy(text);
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text;document.body.appendChild(ta);ta.select();
+  document.execCommand('copy');document.body.removeChild(ta);
+  showToast('Copied! 📋','ok');
+}
+
+// ── WHATSAPP ──
+function shareWhatsApp(){
+  if(!activeSection||!CONTENT[activeSection.id])return;
+  const title=activeSection.label+' — '+BIZ.name;
+  const preview=CONTENT[activeSection.id].substring(0,300)+'...';
+  const link='\n\n🚀 Generated by AutoStartup (Free): https://agent-company-five.vercel.app';
+  const msg=encodeURIComponent('*'+title+'*\n\n'+preview+link);
+  window.open('https://wa.me/?text='+msg,'_blank');
+}
+
+// ── PDF ──
+function downloadPDF(){
+  if(!activeSection||!CONTENT[activeSection.id]){showToast('Generate report first','err');return;}
+  const content=CONTENT[activeSection.id];
+  const title=activeSection.label+' — '+BIZ.name;
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${title}</title><style>body{font-family:Arial,sans-serif;max-width:800px;margin:40px auto;padding:20px;color:#222;line-height:1.7;}h1{font-size:22px;border-bottom:2px solid #000;padding-bottom:10px;}h3{font-size:16px;margin-top:24px;border-left:3px solid #000;padding-left:10px;}p,li{font-size:14px;}ul{padding-left:20px;}strong{font-weight:600;}.footer{margin-top:40px;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:10px;}</style></head><body><h1>${title}</h1>${formatForPDF(content)}<div class="footer">Generated by AutoStartup — agent-company-five.vercel.app</div></body></html>`;
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=BIZ.name+'_'+activeSection.id+'.html';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Downloaded! Open in browser → Print → Save as PDF','ok');
+}
+function formatForPDF(raw){
+  return raw
+    .replace(/^#{1,6}\s*(.+)$/gm,'<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^[-•*]\s(.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>[\s\S]*?<\/li>)/g,'<ul>$1</ul>')
+    .replace(/\n\n/g,'</p><p>')
+    .replace(/\n/g,'<br>');
+}
+
+// ── EMAIL ──
+function emailReport(){
+  if(!activeSection||!CONTENT[activeSection.id]){showToast('Generate report first','err');return;}
+  const subject=encodeURIComponent(activeSection.label+' — '+BIZ.name+' | AutoStartup');
+  const body=encodeURIComponent(CONTENT[activeSection.id]+'\n\n---\nGenerated by AutoStartup\nhttps://agent-company-five.vercel.app');
+  window.open('mailto:?subject='+subject+'&body='+body,'_blank');
+}
+
+// ── RESULT ──
+function renderRes(){
+  const body=document.getElementById('res-body');
+  const redo=document.getElementById('redo-btn');
+  if(isLoading){
+    redo.style.display='none';
+    body.innerHTML=`<div class="ld"><div class="sp"></div><div class="ld-t">Generating report...</div><div class="ld-s">${activeSection.label}<br>for ${BIZ.name}</div></div>`;
+  }else if(CONTENT[activeSection.id]){
+    redo.style.display='block';
+    body.innerHTML=`<div class="res-chip fi"><div class="res-chip-ico">${activeSection.icon}</div><div><div class="res-chip-nm">${activeSection.label}</div><div class="res-chip-biz">for ${BIZ.name}</div></div></div><div class="ct fi">${fmt(CONTENT[activeSection.id])}</div>`;
+  }
+}
+function fmt(raw){
+  return raw
+    .replace(/^#{1,6}\s*(.+)$/gm,'<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`([^`\n]+)`/g,'<code>$1</code>')
+    .replace(/^[-•*]\s(.+)$/gm,'<li>$1</li>')
+    .replace(/^\d+\.\s(.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>[\s\S]*?<\/li>)/g,'<ul style="list-style:none;padding:0;margin:4px 0">$1</ul>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>');
+}
+
+// ── CONFETTI ──
+function launchConfetti(){
+  const colors=['#fff','#0ed2d2','#4ade80','#fbbf24','#f87171','#a78bfa'];
+  for(let i=0;i<60;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.cssText=`left:${Math.random()*100}%;top:-10px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*2}s;animation-duration:${2+Math.random()*2}s;transform:rotate(${Math.random()*360}deg);`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),4000);
+  }
+  showToast('🎉 All 38 reports generated!','ok');
+}
+
+// ── API ──
+function getPrompt(id,name,desc){
+  const base=`You are a senior startup consultant. Write a detailed, specific report for startup "${name}": ${desc}.\nRules: English only. ### for headers. ** for bold. - for bullets. Write DIRECTLY, no preamble. Real 2026-2030 data, real company names, India focus.\n\n`;
+  const p={
+    overview:base+'Business Overview:\n### Executive Summary\n### Core Value Proposition\n### Business Model\n### Target Market\n### Capital Required for MVP (INR)\n### Key Success Factors',
+    problem:base+'Problem & Solution:\n### The Core Problem\n### Who Is Affected\n### Current Inadequate Solutions\n### Our Solution\n### Key Differentiators\n### Why Users Will Switch',
+    whynow:base+'Why Now Analysis:\n### Market Timing\n### Technology Enablers\n### Post-2020 Behavioral Shifts\n### Regulatory Tailwinds\n### Economic Factors\n### Window of Opportunity',
+    vision:base+'Vision & Mission:\n### 10-Year Vision\n### Mission Statement\n### Core Values\n### Strategic Pillars\n### North Star Metric\n### Social Impact',
+    market:base+'Market Potential:\n### Total Addressable Market (INR+USD)\n### Serviceable Addressable Market\n### Serviceable Obtainable Market\n### CAGR\n### Key Growth Drivers\n### India Tier Breakdown\n### Market Risks',
+    segments:base+'Customer Segmentation with 3 personas. Each: name, age, job, city tier, income, pain points, tools used, willingness to pay, online habits. End with primary target.',
+    painpoints:base+'5 User Pain Points. Each: severity, time lost, money wasted, current workaround, why it fails. Add Jobs-to-be-Done and emotional pain.',
+    trends:base+'Market Trends:\n### Macro Trends\n### Micro Trends\n### India-Specific Dynamics\n### Behavior Shifts 2023-2026\n### 2030 Predictions',
+    competition:base+'Competition: 3-4 real competitors each with funding, users, pricing, strengths, weaknesses. Add competitive matrix, unfair advantages, blue ocean.',
+    stories:base+'10 User Stories in 3 epics. Each: As a [persona] I want [feature] so that [benefit]. Include acceptance criteria, priority, story points.',
+    mvp:base+'MVP:\n### Core Features\n### Excluded from v1\n### Success Metrics\n### 8-Week Build Timeline\n### Cost (INR)\n### Validation Method',
+    roadmap:base+'12-Month Roadmap in 4 phases. Each: features, team, budget (INR), KPIs. Add Year 2 vision.',
+    moscow:base+'MoSCoW:\n### Must Have\n### Should Have\n### Could Have\n### Will Not Have Now\n### Effort Summary',
+    ai:base+'AI & Automation: 5 features (tech, function, value, complexity). Process automations. APIs with costs. Competitive moat.',
+    techstack:base+'Tech Stack: Frontend, Backend, DB, Auth, Payments, Cloud, Analytics, CI/CD. Each: technology, INR/month, reason. Total costs at scale.',
+    design:base+'Design Guide:\n### Philosophy\n### Color Palette (hex)\n### Typography\n### 5 Key Screens\n### UX Principles\n### Accessibility',
+    bizmodel:base+'Business Model:\n### Revenue Model\n### Pricing Tiers with INR prices\n### Unit Economics (CAC, LTV, ratio)\n### Path to 1 Crore ARR',
+    revenue:base+'Revenue Forecast: assumptions, Month 1-12 (users, paying%, MRR), Year 2-3 quarterly, break-even, best/base/worst scenarios.',
+    gtm:base+'GTM Strategy:\n### GTM Motion\n### First 100 Customers\n### Channel Strategy\n### Launch Messaging\n### PR Plan\n### 90-Day KPIs',
+    distribution:base+'Distribution: 5 channels (CAC, volume, tactics, timeline). App store, B2B, integration strategies.',
+    acquisition:base+'Acquisition & Retention:\n### 5 Channels with CAC\n### Onboarding Flow\n### D1/D7/D30 Retention Targets\n### Retention Mechanisms\n### Referral Program',
+    journey:base+'Customer Journey Map: Awareness→Interest→Consideration→Decision→Onboarding→Value→Loyalty→Advocacy. Each: action, emotion, touchpoint, opportunity, metric.',
+    marketing:base+'Marketing Plan:\n### Brand Voice\n### Content Strategy\n### Social Media (Instagram, LinkedIn, X)\n### Influencer Strategy\n### Email Sequences',
+    seo:base+'SEO & Ads: 10 keywords with volume, content plan, Google Ads (INR budget, CPC, conversions), Meta Ads, traffic goals.',
+    team:base+'Team:\n### Founding Team\n### First 5 Hires (role, month, INR salary)\n### Equity Split\n### Org Chart\n### Culture Principles',
+    costs:base+'Costs: Month 1-2, 3-4, 5-6 (tech, salaries, marketing, legal, total burn). 6-month runway needed. Cost optimization tips.',
+    kpis:base+'KPIs: North Star Metric, Business KPIs, Product KPIs, Financial KPIs, Team KPIs, Red Flags.',
+    support:base+'Customer Success:\n### Support Channels & SLAs\n### Top 8 FAQs\n### Escalation Matrix\n### Health Score\n### Tools Stack',
+    legal:base+'Legal India:\n### Business Structure\n### Registration & Cost\n### Licenses\n### Data Privacy\n### IP\n### GST\n### Legal Risks\n### Year 1 Budget',
+    traction:base+'Traction: 30/60/90-day milestones, traction channels, investor metrics, early adopter strategy.',
+    valuation:base+'Valuation: 3 methods with Indian comparables. Current range, post-MVP, post-seed targets, value drivers.',
+    funding:base+'Funding Strategy:\n### Amount (INR/USD)\n### Use of Funds\n### Dilution\n### Valuation Ask\n### Pre-raise Milestones\n### 12-Week Timeline',
+    investors:base+'Finding Investors India: top 5 VCs (focus, ticket, portfolio, contact), angels, accelerators, warm intro strategy, email template.',
+    pitch:base+'Investor Pitch 10 slides: each with key message, data point, visual. Story arc, top 5 objections with rebuttals, ask slide.',
+    exit:base+'Exit Strategy: 5 real acquirers (rationale, M&A history, price estimate), IPO feasibility, 7-year path, value maximizers.',
+    naming:base+'Naming: 10 name options (rationale, domain), 5 taglines, brand voice, logo concept, trademark process India.',
+    partnerships:base+'Partnerships: 6 real companies (type, value exchange, approach, impact, terms to negotiate).',
+    brand:base+'Brand Positioning:\n### Statement\n### Archetype\n### Perceptual Map\n### Messaging Hierarchy\n### Promise\n### Tone of Voice\n### Category Ownership',
+  };
+  return p[id]||base+`Comprehensive ${id} analysis.`;
+}
+
+async function callAPI(prompt){
+  // Try Groq + Tavily first
+  try{
+    const resp=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt:prompt,system:'You are a senior startup consultant. Write reports DIRECTLY in English. ### for headers, ** for bold, - for bullets. No preamble. Use real 2026 data, real company names, India market focus.'})
+    });
+    if(resp.ok){
+      const d=await resp.json();
+      if(d.text&&d.text.length>50){
+        if(d.freshData)showToast('⚡ Real-time 2026 data used!','ok');
+        return d.text;
+      }
+    }
+  }catch(e){console.log('Groq fallback:',e.message);}
+  
+  // Fallback to Pollinations
+  const resp2=await fetch('https://text.pollinations.ai/',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'openai',
+      messages:[
+        {role:'system',content:'You are a senior startup consultant. Write reports DIRECTLY in English. ### for headers, ** for bold, - for bullets. No preamble. Use real 2026-2030 data, real company names, India market focus.'},
+        {role:'user',content:prompt}
+      ],
+      seed:Math.floor(Math.random()*99999),
+      private:true
+    })
+  });
+  if(!resp2.ok)throw new Error('Server error '+resp2.status);
+  const raw=await resp2.text();
+  let text=raw;
+  try{
+    const j=JSON.parse(raw);
+    if(j.choices)text=j.choices[0]?.message?.content||'';
+    else if(j.content&&typeof j.content==='string')text=j.content;
+    else if(j.text)text=j.text;
+    if(text.includes('We need to produce')||text.includes('You are a senior'))text='';
+  }catch(e){text=raw;}
+  if(!text||text.length<50)throw new Error('Empty response');
+  return text;
+}
+
+let genAllRunning=false,genAllStop=false;
+
+async function generateAll(){
+  if(genAllRunning){
+    genAllStop=true;genAllRunning=false;
+    document.getElementById('gen-all-btn').textContent='⚡ Generate All 38 Reports';
+    document.getElementById('gen-all-btn').style.cssText='width:100%;padding:13px;background:var(--txt);color:var(--bg);border:none;border-radius:12px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;';
+    document.getElementById('gen-all-status').style.display='none';
+    return;
+  }
+  genAllStop=false;genAllRunning=true;
+  const btn=document.getElementById('gen-all-btn');
+  const status=document.getElementById('gen-all-status');
+  btn.textContent='⏹ Stop';
+  btn.style.cssText='width:100%;padding:13px;background:#1a1a1a;color:#ff4444;border:1px solid #ff4444;border-radius:12px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;';
+  status.style.display='block';
+  let done=0,failed=0;
+  for(let i=0;i<SECTIONS.length;i++){
+    if(genAllStop)break;
+    const sec=SECTIONS[i];
+    if(CONTENT[sec.id]){done++;continue;}
+    status.textContent=`⚡ ${i+1}/38: ${sec.label}...`;
+    try{
+      CONTENT[sec.id]=await callAPI(getPrompt(sec.id,BIZ.name,BIZ.desc));
+      done++;
+    }catch(e){failed++;}
+    buildList();
+    updProg();
+    saveCurrentProject();
+    await new Promise(r=>setTimeout(r,500));
+  }
+  genAllRunning=false;
+  btn.textContent='⚡ Generate All 38 Reports';
+  btn.style.cssText='width:100%;padding:13px;background:var(--txt);color:var(--bg);border:none;border-radius:12px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;';
+  if(!genAllStop&&done===38)launchConfetti();
+  else status.textContent=(genAllStop?'Stopped. ':'Done! ')+done+' reports.'+(failed?' '+failed+' failed.':'');
+  saveCurrentProject();
+}
+
+async function doGen(sec){
+  isLoading=true;renderRes();
+  let retries=0;
+  await new Promise(r=>setTimeout(r,2000));
+  while(retries<3){
+    try{
+      CONTENT[sec.id]=await callAPI(getPrompt(sec.id,BIZ.name,BIZ.desc));
+      saveCurrentProject();
+      isLoading=false;renderRes();buildList();
+      showToast('Report ready!','ok');
+      // Show optional feedback after every 3rd report
+      const _done=Object.keys(CONTENT).length;
+      if(_done>0 && _done%3===0)setTimeout(showFeedback,1500);
+
+      return;
+    }catch(e){
+      retries++;
+      if(retries<3){await new Promise(r=>setTimeout(r,2000));}
+      else{
+        isLoading=false;
+        CONTENT[sec.id]='Error: '+e.message+'\n\nTap Redo to try again.';
+        renderRes();showToast('Error — tap Redo','err');
+      }
+    }
+  }
+}
+
+async function redoCurrent(){
+  if(!activeSection||isLoading)return;
+  delete CONTENT[activeSection.id];
+  buildList();await doGen(activeSection);
+}
+
+// ── NAV ──
+function showScreen(id){
+  if(id==='history')buildHistoryList();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('off',s.id!==id));
+}
+function goBack(){showScreen('app');buildList();}
+function openModal(){document.getElementById('m-name').value=BIZ.name;document.getElementById('m-desc').value=BIZ.desc;document.getElementById('modal').classList.remove('off');}
+function modalBg(e){if(e.target.id==='modal')document.getElementById('modal').classList.add('off');}
+function saveModal(){
+  const n=document.getElementById('m-name').value.trim();
+  const d=document.getElementById('m-desc').value.trim();
+  if(!n||!d)return;
+  if(n!==BIZ.name||d!==BIZ.desc)CONTENT={};
+  BIZ={name:n,desc:d};
+  document.getElementById('modal').classList.add('off');
+  saveCurrentProject();buildList();showToast('Saved!','ok');
+}
+// ── FEEDBACK ──
+
+let feedbackShown=false;
+
+function showFeedback(){
+  if(feedbackShown)return;
+  feedbackShown=true;
+
+  document.getElementById('feedback-ta').value='';
+
+  document.getElementById('feedback-modal').classList.remove('off');
+}
+
+function closeFeedback(){
+  document.getElementById('feedback-modal').classList.add('off');
+}
+
+
+
+async function submitFeedback(){
+  const comment=document.getElementById('feedback-ta').value.trim();
+  const msg=`🔔 New Feedback!\n\nBusiness: ${BIZ.name||'Unknown'}\nComment: ${comment||'No comment'}\nReports done: ${Object.keys(CONTENT).length}/38`;
+  
+  try{
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:CHAT_ID,text:msg})
+    });
+  }catch(e){console.log('Telegram error:',e);}
+  
+  closeFeedback();
+  showToast('Thank you! 🙏','ok');
+}
+
+// ── MARKETING KIT ──
+
+async function openMkit(){
+  const done=Object.keys(CONTENT).length;
+  document.getElementById('mkit').classList.remove('off');
+  document.getElementById('mkit-loading').style.display='flex';
+  document.getElementById('mkit-body').innerHTML='<div class="mkit-loading" id="mkit-loading"><div class="sp"></div><div class="ld-t">Creating your marketing kit...</div><div class="ld-s">AI is reading your reports<br>and creating content for all platforms</div></div>';
+  
+  // Build summary from available reports
+  let summary='';
+  const keys=['overview','problem','market','bizmodel','gtm','brand'];
+  keys.forEach(k=>{if(CONTENT[k])summary+=CONTENT[k].substring(0,400)+'\n\n';});
+  
+  const prompt=`Based on this startup "${BIZ.name}" information:\n\n${summary}\n\nCreate marketing content. Return ONLY this exact format with no extra text:\n\n[INSTAGRAM]\nWrite a compelling Instagram caption (150-200 words) with relevant hashtags\n\n[LINKEDIN]\nWrite a professional LinkedIn post (200-250 words)\n\n[X]\nWrite a X Thread (5 tweets, each starting with 1/, 2/, etc.)\n\n[YOUTUBE]\nWrite a 60-second YouTube Short script`;
+
+  try{
+    const mresp=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        prompt:prompt,
+        system:'You are an expert social media marketer. Create engaging, viral marketing content for startups. Be specific, use emojis where appropriate. Always use exact section headers like [INSTAGRAM], [LINKEDIN], [X], [YOUTUBE].'
+      })
+    });
+    if(!mresp.ok)throw new Error('Server error '+mresp.status);
+    const mdata=await mresp.json();
+    const text=mdata.text||'';
+    if(!text||text.length<50)throw new Error('Empty response');
+    
+    // Parse sections
+    const sections={
+      instagram:extractSection(text,'[INSTAGRAM]','[LINKEDIN]'),
+      linkedin:extractSection(text,'[LINKEDIN]','[X]'),
+      x:extractSection(text,'[X]','[YOUTUBE]'),
+      youtube:extractSection(text,'[YOUTUBE]',null)
+    };
+    
+    renderMkit(sections);
+    
+    // Send to Telegram
+    const tgMsg=`🚀 Marketing Kit Generated!\n\nStartup: ${BIZ.name}\n\n📱 INSTAGRAM:\n${sections.instagram.substring(0,300)}...`;
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:CHAT_ID,text:tgMsg})
+    }).catch(()=>{});
+    
+  }catch(e){
+    document.getElementById('mkit-body').innerHTML=`<div class="mkit-loading"><div class="ld-t" style="color:#f87171">Error generating kit</div><div class="ld-s">${e.message}</div></div>`;
+  }
+}
+
+function extractSection(text,start,end){
+  const si=text.indexOf(start);
+  if(si===-1)return'Content not available';
+  const content=text.substring(si+start.length);
+  if(!end)return content.trim();
+  const ei=content.indexOf(end);
+  return ei===-1?content.trim():content.substring(0,ei).trim();
+}
+
+function renderMkit(sections){
+  const platforms=[
+    {key:'instagram',icon:'📱',title:'Instagram Caption',color:'#E1306C'},
+    {key:'linkedin',icon:'💼',title:'LinkedIn Post',color:'#0077B5'},
+    {key:'x',icon:'🐦',title:'X Thread',color:'#000'},
+    {key:'youtube',icon:'📹',title:'YouTube Script',color:'#FF0000'},
+  ];
+  
+  let html='<div style="margin-bottom:12px;font-size:13px;color:#666;">Tap any card to copy content!</div>';
+  
+  platforms.forEach(p=>{
+    html+=`<div class="mkit-card">
+      <div class="mkit-card-hd">
+        <div class="mkit-card-title">${p.icon} ${p.title}</div>
+        <button class="mkit-card-copy" onclick="copyMkitSection('${p.key}')">📋 Copy</button>
+      </div>
+      <div class="mkit-content" id="mkit-${p.key}">${sections[p.key]}</div>
+    </div>`;
+  });
+  
+  document.getElementById('mkit-body').innerHTML=html;
+}
+
+function copyMkitSection(key){
+  const el=document.getElementById('mkit-'+key);
+  if(!el)return;
+  const text=el.textContent;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>showToast('Copied! 📋','ok')).catch(()=>fallbackCopy(text));
+  }else fallbackCopy(text);
+}
+
+function closeMkit(){
+  document.getElementById('mkit').classList.add('off');
+}
+
+// ── 7 AI AGENTS ──
+// ── TELEGRAM CONFIG ──
+
+const AGENTS={
+  vision:{
+    name:'💡 Vision Agent',
+    sections:['overview','problem','whynow','vision','pitch'],
+    prompt:(name,desc,data)=>`You are a startup pitch expert. Startup: "${name}" — ${desc}\n\nContext from reports:\n${data}\n\nYou MUST respond with EXACTLY this format. Use the exact section headers shown:\n\n[ELEVATOR_PITCH]\n(Write a punchy 30-second elevator pitch in 60-80 words. Start directly with the pitch, no intro.)\n\n[PITCH_DECK]\n(Write a 10-slide pitch deck outline. Format: Slide 1: Title — key point. Slide 2: Problem — key point. etc. Be specific.)\n\n[ONE_PAGER]\n(Write a structured investor one-pager with these sections: THE PROBLEM, OUR SOLUTION, MARKET SIZE, BUSINESS MODEL, TRACTION, THE ASK. Each section 2-3 lines.)`,
+    outputs:['ELEVATOR_PITCH','PITCH_DECK','ONE_PAGER'],
+    labels:['🎤 Elevator Pitch (30 sec)','📊 Pitch Deck — 10 Slides','📄 Investor One-Pager']
+  },
+  market:{
+    name:'📊 Market Agent',
+    sections:['market','segments','competition','trends','painpoints'],
+    prompt:(name,desc,data)=>`You are a market research analyst. Startup: "${name}" — ${desc}\n\nContext:\n${data}\n\nRespond with EXACTLY this format:\n\n[COMPETITOR_TABLE]\n(List 5 real competitors. For each: Name | Funding | Users | Price | Weakness | Our Edge. Use | separator.)\n\n[MARKET_SIZE]\n(Calculate TAM, SAM, SOM for India market with INR numbers. Show calculation logic. Be specific with crore/lakh numbers.)\n\n[OPPORTUNITY]\n(Write 3 key market insights with specific data points, timing window, and why NOW is the right time.)`,
+    outputs:['COMPETITOR_TABLE','MARKET_SIZE','OPPORTUNITY'],
+    labels:['⚔️ Competitor Analysis','📈 Market Size (TAM/SAM/SOM)','🎯 Market Opportunity']
+  },
+  build:{
+    name:'🚀 Build Agent',
+    sections:['mvp','techstack','roadmap','moscow','ai'],
+    prompt:(name,desc,data)=>`You are a CTO. Startup: "${name}" — ${desc}\n\nContext:\n${data}\n\nRespond with EXACTLY this format:\n\n[TECH_STACK]\n(List recommended tech stack: Frontend, Backend, Database, Auth, Payments, Hosting, Analytics. For each: tool name, why chosen, free/paid, monthly cost in INR.)\n\n[SPRINT_PLAN]\n(8-week MVP plan. Week 1: goal + 3 tasks. Week 2: goal + 3 tasks. Continue for all 8 weeks. Be very specific.)\n\n[CHECKLIST]\n(Pre-launch checklist with 20 items. Group them: Tech (5 items), Legal (5 items), Marketing (5 items), Operations (5 items). Each item actionable.)`,
+    outputs:['TECH_STACK','SPRINT_PLAN','CHECKLIST'],
+    labels:['⚙️ Tech Stack Recommendations','📅 8-Week Sprint Plan','✅ Pre-Launch Checklist (20 items)']
+  },
+  revenue:{
+    name:'💰 Revenue Agent',
+    sections:['bizmodel','revenue','costs','valuation','funding'],
+    prompt:(name,desc,data)=>`You are a CFO. Startup: "${name}" — ${desc}\n\nContext:\n${data}\n\nRespond with EXACTLY this format:\n\n[PRICING]\n(3-tier pricing in INR: Free tier features, Pro tier price + features, Business tier price + features. Include what makes each tier valuable.)\n\n[FINANCIAL_MODEL]\n(12-month projection table. Format: Month | Users | Paying% | MRR(INR) | Costs(INR) | Net. Include assumptions below table.)\n\n[UNIT_ECONOMICS]\n(Calculate: CAC, LTV, LTV/CAC ratio, Payback period, Gross margin. Use realistic India market numbers. Show formulas.)`,
+    outputs:['PRICING','FINANCIAL_MODEL','UNIT_ECONOMICS'],
+    labels:['💳 Pricing Strategy (3 Tiers)','📊 12-Month Financial Model','📐 Unit Economics']
+  },
+  hr:{
+    name:'👥 HR Agent',
+    sections:['team','costs','kpis','support','legal'],
+    prompt:(name,desc,data)=>`You are an HR expert. Startup: "${name}" — ${desc}\n\nContext:\n${data}\n\nRespond with EXACTLY this format:\n\n[JOB_DESCRIPTIONS]\n(Write 3 critical job descriptions. For each: Job Title, Responsibilities (5 points), Requirements (5 points), Salary range in INR, Equity %)\n\n[ORG_CHART]\n(Text org chart for Year 1. Show hierarchy with → arrows. Include: Founder, key hires, their reporting structure, and when each role is needed month-wise.)\n\n[HIRING_PLAN]\n(Month-by-month hiring plan for 12 months. Format: Month X: Role | Reason | Salary INR | Cumulative team size.)`,
+    outputs:['JOB_DESCRIPTIONS','ORG_CHART','HIRING_PLAN'],
+    labels:['📝 3 Job Descriptions','🏢 Org Chart','📅 12-Month Hiring Plan']
+  },
+  investor:{
+    name:'💵 Investor Agent',
+    sections:['funding','investors','traction','valuation','pitch'],
+    prompt:(name,desc,data)=>`You are a fundraising expert. Startup: "${name}" — ${desc}\n\nContext:\n${data}\n\nRespond with EXACTLY this format:\n\n[COLD_EMAIL]\n(Write 3 cold emails to investors. Each email: Subject line + body (150 words max). Make each email unique — different angles.)\n\n[PITCH_SCRIPT]\n(5-minute investor pitch script word-by-word. Sections: Hook (30s), Problem (60s), Solution (60s), Market (45s), Traction (45s), Team (30s), Ask (30s). Write exactly what to say.)\n\n[INVESTOR_LIST]\n(List 10 specific Indian VCs/angels. For each: Name | Fund | Ticket Size | Portfolio Companies | Why they'd invest in us | LinkedIn/Contact)`,
+    outputs:['COLD_EMAIL','PITCH_SCRIPT','INVESTOR_LIST'],
+    labels:['📧 3 Cold Emails','🎤 5-Min Pitch Script','🔍 10 Target Investors']
+  },
+  brand:{
+    name:'🎯 Brand Agent',
+    sections:['brand','naming','marketing','seo','partnerships'],
+    prompt:(name,desc,data)=>`You are a brand strategist. Startup: "${name}" — ${desc}\n\nContext:\n${data}\n\nRespond with EXACTLY this format:\n\n[BRAND_VOICE]\n(Define brand personality in 5 words. Then 5 DO's and 5 DON'Ts for communication. Then tone for: Social media, Investor comms, Customer support, Marketing copy.)\n\n[MESSAGING]\n(Tagline (5 words max), Value proposition (1 sentence), 3 key messages for: Customers, Investors, Press/Media. Each message 2-3 lines.)\n\n[CONTENT_CALENDAR]\n(30-day content plan. Week 1-4, each week has 7 days. Format: Day X: Platform | Content idea | Caption starter. Be creative and specific.)`,
+    outputs:['BRAND_VOICE','MESSAGING','CONTENT_CALENDAR'],
+    labels:['🗣️ Brand Voice Guide','💬 Messaging Framework','📅 30-Day Content Calendar']
+  }
+};
+
+let currentAgentKey=null;
+let agentResultText='';
+
+function openAgents(){
+  const done=Object.keys(CONTENT).length;
+  document.getElementById('agents-screen').classList.remove('off');
+}
+
+function closeAgents(){
+  document.getElementById('agents-screen').classList.add('off');
+}
+
+function closeAgentResult(){
+  document.getElementById('aresult-screen').classList.add('off');
+}
+
+async function runAgent(key){
+  const agent=AGENTS[key];
+  if(!agent)return;
+  currentAgentKey=key;
+  
+  // Show result screen with loading
+  document.getElementById('aresult-title').textContent=agent.name;
+  document.getElementById('aresult-body').innerHTML=`<div class="mkit-loading"><div class="sp"></div><div class="ld-t">${agent.name} is working...</div><div class="ld-s">Reading your reports and creating outputs...<br>This may take 20-30 seconds</div></div>`;
+  document.getElementById('aresult-screen').classList.remove('off');
+  
+  // Build context from relevant sections
+  let contextData='';
+  agent.sections.forEach(s=>{
+    if(CONTENT[s] && CONTENT[s].length>50)contextData+=CONTENT[s].substring(0,600)+'\n\n';
+  });
+  
+  // If specific sections not found, use ANY available content
+  if(!contextData){
+    Object.keys(CONTENT).slice(0,5).forEach(k=>{
+      if(CONTENT[k] && CONTENT[k].length>50)contextData+=CONTENT[k].substring(0,400)+'\n\n';
+    });
+  }
+  
+  if(!contextData){
+    document.getElementById('aresult-body').innerHTML=`<div class="mkit-loading"><div class="ld-t" style="color:#f87171">No reports found</div><div class="ld-s">Please generate at least one report first!</div></div>`;
+    return;
+  }
+  
+  try{
+    const agentPrompt=agent.prompt(BIZ.name,BIZ.desc,contextData);
+    console.log('[Agent] Calling API for:',agent.name);
+    
+    const resp=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        prompt:agentPrompt,
+        system:'You are an expert startup advisor. Create detailed, actionable outputs. India market focus. ALWAYS use the exact section headers in [BRACKETS] as shown in the prompt.'
+      })
+    });
+    
+    console.log('[Agent] Status:',resp.status);
+    
+    if(!resp.ok){
+      const errText=await resp.text().catch(()=>'Unknown');
+      throw new Error('API error '+resp.status+': '+errText.substring(0,300));
+    }
+    
+    const d=await resp.json().catch(e=>{throw new Error('JSON parse failed: '+e.message);});
+    console.log('[Agent] Keys:',Object.keys(d));
+    
+    const text=d.text||d.content||'';
+    console.log('[Agent] Text length:',text.length);
+    
+    if(!text||text.length<20){
+      throw new Error('Empty AI response. Got: '+JSON.stringify(d).substring(0,300));
+    }
+    
+    agentResultText=text;
+    renderAgentResult(agent,text);
+    
+    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:CHAT_ID,text:'🤖 Agent: '+agent.name+'\nStartup: '+BIZ.name})
+    }).catch(()=>{});
+    
+  }catch(e){
+    console.error('[Agent] Error:',e);
+    document.getElementById('aresult-body').innerHTML='<div style="padding:20px"><div style="color:#f87171;font-size:16px;font-weight:700;margin-bottom:12px">❌ Error</div><div style="color:#bbb;font-size:13px;line-height:1.7;background:#1a1a1a;padding:14px;border-radius:10px;word-break:break-all">'+e.message+'</div><div style="color:#666;font-size:12px;margin-top:12px">Tap ← and try again</div></div>';
+  }
+}
+
+function renderAgentResult(agent,text){
+  let html='';
+  
+  // Try section parsing first
+  let parsed=false;
+  agent.outputs.forEach((output,i)=>{
+    const start='['+output+']';
+    if(text.includes(start))parsed=true;
+  });
+  
+  if(parsed){
+    // Sections found — parse normally
+    agent.outputs.forEach((output,i)=>{
+      const label=agent.labels[i];
+      const start='['+output+']';
+      const nextOutput=agent.outputs[i+1];
+      const end=nextOutput?'['+nextOutput+']':null;
+      const content=extractSection(text,start,end)||'Not available';
+      html+=`<div class="aresult-section">
+        <div class="aresult-sec-hd">
+          <div class="aresult-sec-title">${label}</div>
+          <button class="aresult-sec-copy" onclick="copyAgentSection('aresult-sec-${i}')">📋 Copy</button>
+        </div>
+        <div class="aresult-content" id="aresult-sec-${i}">${content}</div>
+      </div>`;
+    });
+  } else {
+    // No sections found — show full raw text
+    const rawDiv=document.createElement('div');
+    rawDiv.className='aresult-section';
+    rawDiv.innerHTML='<div class="aresult-sec-hd"><div class="aresult-sec-title">📋 Full Output</div><button class="aresult-sec-copy" onclick="copyAgentResult()">📋 Copy All</button></div>';
+    const rawContent=document.createElement('div');
+    rawContent.className='aresult-content';
+    rawContent.id='aresult-raw';
+    rawContent.textContent=text;
+    rawDiv.appendChild(rawContent);
+    document.getElementById('aresult-body').innerHTML='';
+    document.getElementById('aresult-body').appendChild(rawDiv);
+    return;
+  }
+  
+  document.getElementById('aresult-body').innerHTML=html;
+}
+
+function copyAgentSection(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(el.textContent).then(()=>showToast('Copied! 📋','ok')).catch(()=>fallbackCopy(el.textContent));
+  }else fallbackCopy(el.textContent);
+}
+
+function copyAgentResult(){
+  if(!agentResultText){showToast('Nothing to copy!','err');return;}
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(agentResultText).then(()=>showToast('All copied! 📋','ok')).catch(()=>fallbackCopy(agentResultText));
+  }else fallbackCopy(agentResultText);
+}
+
+function copyAllReports(){
+  const done=Object.keys(CONTENT).length;
+  if(!done){showToast('No reports generated yet!','err');return;}
+  let all='';
+  SECTIONS.forEach(sec=>{
+    if(CONTENT[sec.id]){
+      all+=`\n\n========================================\n${sec.icon} ${sec.label}\n========================================\n\n${CONTENT[sec.id]}`;
+    }
+  });
+  const full=`AutoStartup Report — ${BIZ.name}\n${BIZ.desc}\n${all}`;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(full).then(()=>showToast(`Copied ${done} reports! 📋`,'ok')).catch(()=>fallbackCopy(full));
+  }else fallbackCopy(full);
+}
+
+// ── PWA INSTALL ──
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',(e)=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  // Show install button
+  const btn=document.getElementById('pwa-install-btn');
+  if(btn)btn.style.display='flex';
+});
+window.addEventListener('appinstalled',()=>{
+  showToast('App installed! 🎉','ok');
+  const btn=document.getElementById('pwa-install-btn');
+  if(btn)btn.style.display='none';
+});
+function installPWA(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(r=>{
+      if(r.outcome==='accepted')showToast('Installing...','ok');
+      deferredPrompt=null;
+    });
+  }
+}
+
+function showToast(msg,type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show '+type;
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>
