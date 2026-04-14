@@ -1,0 +1,23 @@
+# ══════════════════════════════════════════
+# Digital Godfather — Railway Backend
+# No strict version pins to avoid build errors
+# Compatible with Python 3.10+
+# ══════════════════════════════════════════
+
+# Web Framework
+fastapi
+uvicorn[standard]
+
+# AI / LLM
+crewai
+crewai-tools
+litellm
+langchain-groq
+
+# Data & Config
+pydantic
+python-dotenv
+
+# HTTP (needed by crewai internals)
+httpx
+requests
