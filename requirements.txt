@@ -1,4 +1,0 @@
-fastapi
-uvicorn
-crewai
-langchain_groq
