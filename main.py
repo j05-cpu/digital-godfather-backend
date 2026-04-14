@@ -6,7 +6,7 @@
 ╚══════════════════════════════════════════════════════════════╝
 
 ENV VARIABLES required on Railway:
-  GROQ_API_KEY   = your Groq API key from console.groq.com
+  GROQ_API_KE    = os.getenv("GROQ_API_KEY")
   PORT           = (Railway sets this automatically)
 """
 
